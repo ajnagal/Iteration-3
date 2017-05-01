@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javax.swing.plaf.nimbus.State;
 
 /**
  * Registers, Connects to, and sends commands to a database
@@ -34,6 +38,13 @@ public class DatabaseDriver {
         System.out.println(e.getMessage());
       }
     } catch (ClassNotFoundException e) {
+      Alert alert = new Alert(AlertType.ERROR, "Message. Bad Things Happened! :" + "\u001B[31m"
+          + "Could not find Database Driver Jar File, make sure you add it to the classpath!"
+          + "\u001B[30m"); //can add buttons if you want, or change to different popup types
+      alert.showAndWait(); //this puts it in focus
+      if (alert.getResult() == ButtonType.YES) {
+        //do stuff, if neccesary, else, delete
+      }
       System.out.println("\u001B[31m"
           + "Could not find Database Driver Jar File, make sure you add it to the classpath!"
           + "\u001B[30m");
@@ -74,7 +85,20 @@ public class DatabaseDriver {
     return listrs;
   }
 
-  private boolean registerDriver() throws ClassNotFoundException {
+  public void send_Commands(ArrayList<String> commands) {
+    try {
+      this.stmt = this.conn.createStatement();
+      for (String command : commands) {
+        this.stmt.addBatch(command);
+      }
+      stmt.executeBatch();
+    } catch (SQLException e) {
+      System.out.println("There was a problem sending a bach of commands to the database");
+    }
+  }
+
+
+    private boolean registerDriver() throws ClassNotFoundException {
     Class.forName(driver);
     return true;
   }

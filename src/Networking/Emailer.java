@@ -1,6 +1,9 @@
 package Networking;
 
 import java.util.Properties;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Dialog;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -24,9 +27,9 @@ public class Emailer implements IEmailer{
    * @param text Message to be sent
    */
   public void email(String email, String text){
-    String from = "testwpiemail@gmail.com"; // from changed accordingly
-    final String username = "testwpiemail"; // username change accordingly
-    final String password = "********"; // password change accordingly
+    String from = "********@********"; // from changed accordingly
+    final String username = "*******"; // username change accordingly
+    final String password = "*******"; // password change accordingly
 
     String host = "smtp.gmail.com"; // Gmail smtp server address
 
@@ -55,7 +58,7 @@ public class Emailer implements IEmailer{
           InternetAddress.parse(email));
 
       // sets subject field of email
-      message.setSubject("Test Email Directions");
+      message.setSubject("Faulkner Hospital Directions");
 
       // sets message
       message.setText(text);
@@ -66,7 +69,7 @@ public class Emailer implements IEmailer{
       System.out.println("Sent message successfully!");
 
     } catch (MessagingException e) {
-      throw new RuntimeException(e);
+      errorMessage();
     }
   }
 
@@ -78,10 +81,10 @@ public class Emailer implements IEmailer{
    */
   public String format (Carrier c, String number) {
     switch(c) {
-      case att: return number + "@txt.att.net";
-      case sprint: return number + "@messaging.sprintpcs.com";
-      case tmobile: return number + "@tmomail.net";
-      case verizon: return number + "@vtext.com";
+      case ATT: return number + "@txt.ATT.net";
+      case SPRINT: return number + "@messaging.sprintpcs.com";
+      case TMOBILE: return number + "@tmomail.net";
+      case VERIZON: return number + "@vtext.com";
       default:return "Unexpected error" + c.name();
     }
   }
@@ -96,6 +99,13 @@ public class Emailer implements IEmailer{
     Emailer e = new Emailer();
     String recepient = e.format(c, number);
     e.email(recepient, text);
+  }
+
+  public void errorMessage() {
+    Dialog error = new Alert(AlertType.ERROR);
+    error.setHeaderText("Email not found");
+    error.setContentText("This is not a valid email.");
+    error.showAndWait();
   }
 
 }

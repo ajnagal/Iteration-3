@@ -6,6 +6,8 @@ import org.Point;
 
 /**
  * Created by Leon Zhang on 2017/4/3.
+ *
+ * This class stores the object physician with it's details/fields for the database
  */
 public class Physician {
 
@@ -79,5 +81,35 @@ public class Physician {
     }
 
     return true;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null)
+      return false;
+    if (obj != null && obj.getClass() != this.getClass()) {
+      return super.equals(obj);
+    }
+    Physician pobj = (Physician) obj;
+//    System.out.println("Comparing " + this.firstName + " -> " + pobj.firstName);
+    if (this.firstName.equals(pobj.firstName) && this.lastName.equals(pobj.lastName) && this.title
+        .equals(pobj.title) && this.PID == pobj.PID ) {
+      if (this.locations != null && pobj.locations != null && this.locations.size() != pobj.locations.size())
+        return false;
+
+      for (Point p : this.locations) {
+        if (!pobj.locations.contains(p)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+
+  @Override
+  public Object clone() {
+    return new Physician(firstName, lastName, title, PID, locations);
   }
 }

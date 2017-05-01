@@ -1,11 +1,12 @@
 package UIControllers;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -34,13 +35,14 @@ public class MainMenuController extends CentralUIController implements Initializ
   private ImageView InfoButton;
 
   @FXML
-  private Button MapButton;
+  private ImageView MapButton;
   @FXML
-  private Button SearchButton;
+  private ImageView SearchButton;
   @FXML
   private Label SearchLabel;
   @FXML
   private Label MapLabel;
+
 
   public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
     Session session = new Session();
@@ -49,7 +51,9 @@ public class MainMenuController extends CentralUIController implements Initializ
     setBackground(anchorPane);
     CentralController.resetSession();
     applyLanguageConfig();
+    isLoggedIn = false;
   }
+
 
   public void applyLanguageConfig(){
     SearchLabel.setText(dictionary.getString("Search", currSession.getLanguage()));
@@ -59,26 +63,28 @@ public class MainMenuController extends CentralUIController implements Initializ
   @Override
   public void customListenerX () {
     MapLabel.setLayoutX(5*(x_res/7) - MapLabel.getPrefWidth()/2);
-    MapButton.setLayoutX(5*(x_res/7) - MapButton.getPrefWidth()/2);
-    SearchButton.setLayoutX(2*(x_res/7) - SearchButton.getPrefWidth()/2);
+    MapButton.setLayoutX(5*(x_res/7) - MapButton.getFitWidth()/2);
+    SearchButton.setLayoutX(2*(x_res/7) - SearchButton.getFitWidth()/2);
     MainKey.setLayoutX(x_res - MainKey.getFitWidth() - 10);
+    InfoButton.setLayoutX(15*x_res/16);
     SearchLabel.setLayoutX(2*(x_res/7) - SearchLabel.getPrefWidth()/2);
   }
 
   @Override
   public void customListenerY () {
     MainKey.setLayoutY(y_res - MainKey.getFitHeight() - 10);
-    MapButton.setLayoutY(6*(y_res/11) - MapButton.getPrefHeight()/2);
+    MapButton.setLayoutY(6*(y_res/11) - MapButton.getFitHeight()/2);
     MapLabel.setLayoutY(6*(y_res/11) + 100);
-    SearchButton.setLayoutY(6*(y_res/11) - SearchButton.getPrefHeight()/2);
+    SearchButton.setLayoutY(6*(y_res/11) - SearchButton.getFitHeight()/2);
     SearchLabel.setLayoutY(6*(y_res/11) + 100);
     langBox.setLayoutY(y_res - 50);
+    MainKey.setLayoutY(y_res - 50);
   }
 
   public void gotoMap () {
     Stage primaryStage = (Stage) MainMenu.getScene().getWindow();
     try {
-      mapViewFlag = 2;
+      mapViewFlag = 1;
       loadScene(primaryStage, "/MapScene.fxml");
     } catch (Exception e) {
       e.printStackTrace();
@@ -93,11 +99,14 @@ public class MainMenuController extends CentralUIController implements Initializ
     }
   }
 
-  public void gotoAdmin () {
+  public void gotoAdmin () throws IOException {
+    // for now sign up admin when loaded so people can get to admin view
+    //credentialManager.signup("admin", "admin", UserType.ADMIN);
+    // sign up staff when loaded for testing purposes
     Stage primaryStage = (Stage) MainMenu.getScene().getWindow();
     try {
       loadScene(primaryStage, "/AdminLogin.fxml");
-    } catch (Exception e) {
+    } catch (Exception e) { e.printStackTrace();
     }
   }
 
@@ -134,5 +143,9 @@ public class MainMenuController extends CentralUIController implements Initializ
         });
   }
 
+  }
 
-}
+
+
+
+

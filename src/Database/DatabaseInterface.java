@@ -11,6 +11,7 @@ import org.Point;
  */
 public interface DatabaseInterface {
 
+  public double progressBarPercentage = 0;
 
   /**
    * Pulls data from the datababse and populates the local copies of the data
@@ -82,7 +83,7 @@ public interface DatabaseInterface {
   );
 
   /**
-   * edits a physician, updating it with the new fields of the physician given to the function
+   * undoList a physician, updating it with the new fields of the physician given to the function
    *
    * @param real_ph , the updated physician
    * @return true if everything was successful
@@ -111,7 +112,7 @@ public interface DatabaseInterface {
   );
 
   /**
-   * edits a physician, updating it with the new fields of the physician given to the function
+   * undoList a physician, updating it with the new fields of the physician given to the function
    *
    * @param real_po , the updated point
    * @return true if everything was successful
